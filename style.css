@@ -22,16 +22,19 @@ body {
   
   .personaje {
     position: absolute;
-    width: 60px;
+    width: 60px; /* ✅ Настроен размер персонажа */
     height: auto;
-    bottom: 50px;
+    left: 50px; /* ✅ Начальная позиция */
+    top: 300px; /* ✅ Правильное позиционирование */
+    transition: left 0.1s linear, top 0.1s linear; /* ✅ Плавное движение */
   }
+  
   
   
   .moneda {
     position: absolute;
-    width: 30px; /* Увеличенный размер монеты */
-    height: 30px;
+    width: 35px; /* Увеличенный размер монеты */
+    height: 35px;
     background-color: gold;
     border-radius: 50%;
     box-shadow: 0 0 10px 2px rgba(255, 223, 0, 0.8);

@@ -1,47 +1,26 @@
 class Game {
     constructor() {
         this.container = document.getElementById("game-container");
-        this.personaje = null;
+        this.personaje = new Personaje(); // ✅ Создаём персонажа сразу
         this.monedas = [];
         this.puntuacion = 0;
         this.crearEscenario();
         this.agregarEventos();
-        this.checkColisiones(); // ✅ Теперь метод вызывается здесь
+        this.checkColisiones();
     }
 
     crearEscenario() {
-        this.personaje = new Personaje();
-        this.container.appendChild(this.personaje.element);
+        this.container.appendChild(this.personaje.element); // ✅ Добавляем персонажа в контейнер
+
         for (let i = 0; i < 10; i++) {
             const moneda = new Moneda();
             this.monedas.push(moneda);
             this.container.appendChild(moneda.element);
         }
     }
-    //El código de Ana que no funciona porque checkColisiones() 
-    //llama inmediatamente, antes del primer movimiento, y no se vuelve a activar.
-
-    //agregarEventos() {
-  //window.addEventListener("keydown", (e) => this.personaje.mover(e));
-  //this.checkColisiones();
-//   }
-
-
-//código que funciona porque checkColisiones()
-//llama dentro del controlador de eventos, 
-//lo que significa que se ejecuta después de cada movimiento.
-
-//agregarEventos() {
-    //window.addEventListener("keydown", (e) => {
-      //this.personaje.mover(e);
-      //this.checkColisiones(); // ✅ Коллизии проверяются после движения
-   // });
-  //}
 
     agregarEventos() {
-        console.log("Добавлены обработчики событий");
         window.addEventListener("keydown", (e) => {
-            console.log(e.key);
             this.personaje.mover(e);
         });
     }
@@ -49,11 +28,8 @@ class Game {
     checkColisiones() {
         setInterval(() => {
             this.monedas.forEach((moneda, index) => {
-                console.log(`Персонаж: x=${this.personaje.x}, y=${this.personaje.y}`);
-                console.log(`Монета: x=${moneda.x}, y=${moneda.y}`);
-
                 if (this.personaje.colisionaCon(moneda)) {
-                    console.log("Коллизия! Монета собрана.");
+                    console.log("Монета собрана!");
                     this.container.removeChild(moneda.element);
                     this.monedas.splice(index, 1);
                 }
@@ -70,18 +46,25 @@ class Personaje {
         this.height = 50;
         this.velocidad = 15;
         this.saltando = false;
-        this.element = document.createElement("img");
-this.element.src = "images/recaudador.png"; // Путь к картинке человека
-this.element.classList.add("personaje"); 
-     this.actualizarPosicion();
-    }
 
+        // ✅ Правильный путь к файлу персонажа
+        this.element = document.createElement("img");
+        this.element.src = "./images/taxwoman1.png"; // Проверить, находится ли файл в `images/`
+        this.element.classList.add("personaje");
+
+        // ✅ Добавляем персонажа внутрь контейнера
+        document.getElementById("game-container").appendChild(this.element);
+        this.actualizarPosicion();
+    }
+    
     mover(evento) {
         if (evento.key === "ArrowRight") {
             this.x += this.velocidad;
+            this.element.style.transform = "scaleX(1)"; // ✅ Поворачивается вправо
         } else if (evento.key === "ArrowLeft") {
             this.x -= this.velocidad;
-        } else if (evento.key === "ArrowUp") {
+            this.element.style.transform = "scaleX(-1)"; // ✅ Поворачивается влево
+        } else if (evento.key === "ArrowUp" && !this.saltando) {
             this.saltar();
         }
         this.actualizarPosicion();
@@ -107,6 +90,7 @@ this.element.classList.add("personaje");
                 this.y += 10;
             } else {
                 clearInterval(gravedad);
+                this.saltando = false;
             }
             this.actualizarPosicion();
         }, 20);
@@ -118,18 +102,15 @@ this.element.classList.add("personaje");
     }
 
     colisionaCon(objeto) {
-        let colision =
+        return (
             this.x < objeto.x + objeto.width &&
             this.x + this.width > objeto.x &&
             this.y < objeto.y + objeto.height &&
-            this.y + this.height > objeto.y;
-
-        if (colision) {
-            console.log("Столкновение обнаружено!");
-        }
-
-        return colision;
+            this.y + this.height > objeto.y
+        );
     }
+
+    
 }
 
 class Moneda {
@@ -145,11 +126,10 @@ class Moneda {
         // ✅ Добавляем знак "$" внутрь монеты
         this.element.innerHTML = "$";
 
-
         document.getElementById("game-container").appendChild(this.element);
         this.actualizarPosicion();
 
-        // ✅ Запускаем бесконечное движение монеты
+        // ✅ Запускаем движение монеты
         this.moverAleatorio();
     }
 
@@ -160,12 +140,11 @@ class Moneda {
 
     moverAleatorio() {
         setInterval(() => {
-            this.x = Math.random() * 700 + 50; // Рандомная X координата
-            this.y = Math.random() * 250 + 50; // Рандомная Y координата
+            this.x = Math.random() * 700 + 50;
+            this.y = Math.random() * 250 + 50;
             this.actualizarPosicion();
-        }, 2000); // Монеты двигаются каждые 2 секунды
+        }, 2000);
     }
 }
-
 
 const juego = new Game();
