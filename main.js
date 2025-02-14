@@ -70,9 +70,10 @@ class Personaje {
         this.height = 50;
         this.velocidad = 15;
         this.saltando = false;
-        this.element = document.createElement("div");
-        this.element.classList.add("personaje");
-        this.actualizarPosicion();
+        this.element = document.createElement("img");
+this.element.src = "images/recaudador.png"; // Путь к картинке человека
+this.element.classList.add("personaje"); 
+     this.actualizarPosicion();
     }
 
     mover(evento) {
@@ -135,17 +136,36 @@ class Moneda {
     constructor() {
         this.x = Math.random() * 700 + 50;
         this.y = Math.random() * 250 + 50;
-        this.width = 30;
-        this.height = 30;
+        this.width = 35;
+        this.height = 35;
+
         this.element = document.createElement("div");
         this.element.classList.add("moneda");
+
+        // ✅ Добавляем знак "$" внутрь монеты
+        this.element.innerHTML = "$";
+
+
+        document.getElementById("game-container").appendChild(this.element);
         this.actualizarPosicion();
+
+        // ✅ Запускаем бесконечное движение монеты
+        this.moverAleatorio();
     }
 
     actualizarPosicion() {
         this.element.style.left = `${this.x}px`;
         this.element.style.top = `${this.y}px`;
     }
+
+    moverAleatorio() {
+        setInterval(() => {
+            this.x = Math.random() * 700 + 50; // Рандомная X координата
+            this.y = Math.random() * 250 + 50; // Рандомная Y координата
+            this.actualizarPosicion();
+        }, 2000); // Монеты двигаются каждые 2 секунды
+    }
 }
+
 
 const juego = new Game();

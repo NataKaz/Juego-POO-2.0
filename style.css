@@ -22,21 +22,33 @@ body {
   
   .personaje {
     position: absolute;
-    width: 50px;
-    height: 50px;
-    background-color: #07a07c;
-    border-radius: 50%;
-    border: 5px solid #07a050;
+    width: 60px;
+    height: auto;
+    bottom: 50px;
   }
+  
   
   .moneda {
     position: absolute;
-    width: 30px;
+    width: 30px; /* Увеличенный размер монеты */
     height: 30px;
     background-color: gold;
     border-radius: 50%;
     box-shadow: 0 0 10px 2px rgba(255, 223, 0, 0.8);
+  
+    display: flex; /* ✅ Включаем Flexbox */
+    justify-content: center; /* ✅ Выравниваем по горизонтали */
+    align-items: center; /* ✅ Выравниваем по вертикали */
+  
+    font-size: 24px; /* ✅ Делаем знак $ крупнее */
+    font-weight: bold;
+    color: black;
+    text-shadow: 1px 1px 2px white;
+    font-family: Arial, sans-serif;
   }
+  
+    
+  
   @keyframes moveBackground {
     from {
       background-position: 0 0;
@@ -46,13 +58,10 @@ body {
     }
   }
   
-  #game-container {
-  position: relative;  /* ✅ Добавлено */
-  width: 800px;
-  height: 400px;
-  margin: 20px auto;
-  border: 10px solid #6d6d6d;
-  background: url("city.png") repeat-x;  /* ✅ Убедись, что изображение загружается */
-  background-size: cover;
-  animation: moveBackground 10s linear infinite; /* ✅ Двигаем фон */
-}
+  #game-container {  
+    background: url("city1.png") repeat-x;
+    background-size: cover;
+    animation: moveBackground 10s linear infinite; /* 🔹 Фон плавно двигается */
+  }
+  
+  
