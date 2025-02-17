@@ -11,13 +11,42 @@ body {
   }
   #game-container {
     position: relative;
-    width: 800px;
-    height: 400px;
+    width: 90vw; /*  Используем относительные единицы */
+    height: 50vh; /*  Высота относительно экрана */
+    max-width: 800px; /*  Ограничиваем максимальный размер */
+    max-height: 400px; /* Ограничиваем максимальную высоту */
     margin: 20px auto;
     border: 10px solid #6d6d6d;
-    background: #7ed3f5;
+    background: url("city1.png") no-repeat center center; /*  Центрируем фон */
+    background-size: cover; /* Масштабируем фон, чтобы он не был больше контейнера */
     overflow: hidden;
     border-radius: 30px;
+  }
+
+  /* ✅ Адаптируем игру для телефонов */
+@media (max-width: 768px) {
+  #game-container {
+      width: 95vw;
+      height: 60vh;
+  }
+
+  .personaje {
+      width: 40px;
+      height: auto;
+  }
+
+  .moneda {
+      width: 25px;
+      height: 25px;
+      font-size: 18px;
+  }
+}
+
+/* ✅ Адаптируем игру для планшетов */
+@media (max-width: 1024px) {
+  #game-container {
+      width: 85vw;
+      height: 55vh;
   }
   
   .personaje {
@@ -67,4 +96,29 @@ body {
     animation: moveBackground 10s linear infinite; /*  Фон плавно двигается */
   }
   
-  
+  #touch-controls {
+    display: none; /* Скрываем на ПК */
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+#touch-controls button {
+    font-size: 24px;
+    padding: 10px 20px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 10px;
+}
+
+/* ✅ Показываем кнопки на телефонах */
+@media (max-width: 768px) {
+    #touch-controls {
+        display: flex;
+    }
+}
+}

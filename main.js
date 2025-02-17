@@ -8,12 +8,17 @@ class Game {
         this.agregarEventos();
         this.checkColisiones();
 
-// ✅ Добавляем фоновую музыку
+//  Добавляем фоновую музыку
 this.musicaFondo = new Audio("sounds/background.mp3");
 this.musicaFondo.loop = true; //  Зацикливаем музыку
   this.musicaFondo.volume = 0.3; //  Громкость (0.0 - 1.0)
 this.musicaFondo.play(); //  Запускаем музыку
+
+  // Загружаем звук победы заранее
+  this.sonidoVictoria = new Audio("sounds/victory.mp3");
+  this.sonidoVictoria.volume = 0.7; // Громкость победы
 }
+
 
 
     crearEscenario() {
@@ -45,6 +50,14 @@ this.musicaFondo.play(); //  Запускаем музыку
 
                     this.container.removeChild(moneda.element);
                     this.monedas.splice(index, 1);
+
+                   //  Если все монеты собраны – включаем звук победы!
+                   if (this.monedas.length === 0) {
+                    console.log("🎉 ВСЕ МОНЕТЫ СОБРАНЫ! 🎉");
+                    this.sonidoVictoria.play(); 
+
+                   }
+
                 }
             });
         }, 100);
@@ -93,12 +106,13 @@ class Personaje {
         } else if (evento.key === " " && !this.saltando) { // Пробел - прыжок!
             this.saltar();
         }
+        
+
     
         this.actualizarPosicion();
     }
     
     
-
 
     saltar() {
         this.saltando = true;
@@ -189,3 +203,9 @@ class Moneda {
 }
 
 const juego = new Game();
+
+//  Добавляем управление на телефонах (кнопки тачскрина)
+document.getElementById("left").addEventListener("touchstart", () => juego.personaje.mover({ key: "ArrowLeft" }));
+document.getElementById("right").addEventListener("touchstart", () => juego.personaje.mover({ key: "ArrowRight" }));
+document.getElementById("jump").addEventListener("touchstart", () => juego.personaje.saltar());
+
