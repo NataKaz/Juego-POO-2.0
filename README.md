@@ -1,4 +1,4 @@
-Enlace directo al juego://natakaz.github.io/Juego-POO-2.0/
+Enlace directo al juego: //natakaz.github.io/Juego-POO-2.0/
 
 # 🎮 Juego POO - ¡Recoge las monedas!
 
