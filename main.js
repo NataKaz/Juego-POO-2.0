@@ -7,7 +7,14 @@ class Game {
         this.crearEscenario();
         this.agregarEventos();
         this.checkColisiones();
-    }
+
+// ✅ Добавляем фоновую музыку
+this.musicaFondo = new Audio("sounds/background.mp3");
+this.musicaFondo.loop = true; //  Зацикливаем музыку
+  this.musicaFondo.volume = 0.3; //  Громкость (0.0 - 1.0)
+this.musicaFondo.play(); //  Запускаем музыку
+}
+
 
     crearEscenario() {
         this.container.appendChild(this.personaje.element); //  Добавляем персонажа в контейнер
@@ -30,6 +37,12 @@ class Game {
             this.monedas.forEach((moneda, index) => {
                 if (this.personaje.colisionaCon(moneda)) {
                     console.log("Монета собрана!");
+
+                    // Звук сбора монеты
+                let sonidoMoneda = new Audio("sounds/coin.mp3");
+                sonidoMoneda.volume = 1;
+                sonidoMoneda.play();
+
                     this.container.removeChild(moneda.element);
                     this.monedas.splice(index, 1);
                 }
@@ -47,14 +60,19 @@ class Personaje {
         this.velocidad = 15;
         this.saltando = false;
 
-        // Правильный путь к файлу персонажа
+       // Правильный путь к файлу персонажа
         this.element = document.createElement("img");
         this.element.src = "./images/taxwoman1.png"; // Проверить, находится ли файл в `images/`
         this.element.classList.add("personaje");
 
+        
         //  Добавляем персонажа внутрь контейнера
         document.getElementById("game-container").appendChild(this.element);
         this.actualizarPosicion();
+
+                //  Предзагружаем звук прыжка заранее
+                this.sonidoSalto = new Audio("sounds/jump.mp3");
+                this.sonidoSalto.volume = 0.06;
     }
     
 
@@ -85,6 +103,16 @@ class Personaje {
     saltar() {
         this.saltando = true;
         let alturaMaxima = this.y - 250;
+
+        // Теперь звук уже загружен, и браузер его воспроизводит!
+        this.sonidoSalto.play();
+
+ 
+        // Добавляем звук прыжка
+    let sonidoSalto = new Audio("sounds/jump.mp3");
+    sonidoSalto.volume = 0.05; // Громкость
+    sonidoSalto.play();
+
         const salto = setInterval(() => {
             if (this.y > alturaMaxima) {
                 this.y -= 15;
@@ -94,7 +122,8 @@ class Personaje {
             }
             this.actualizarPosicion(); 
         }, 20);
-    }
+    } 
+  
 
     caer() {
         const gravedad = setInterval(() => {
