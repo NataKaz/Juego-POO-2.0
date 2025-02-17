@@ -1,7 +1,7 @@
 class Game {
     constructor() {
         this.container = document.getElementById("game-container");
-        this.personaje = new Personaje(); // ✅ Создаём персонажа сразу
+        this.personaje = new Personaje(); //  Создаём персонажа сразу
         this.monedas = [];
         this.puntuacion = 0;
         this.crearEscenario();
@@ -10,7 +10,7 @@ class Game {
     }
 
     crearEscenario() {
-        this.container.appendChild(this.personaje.element); // ✅ Добавляем персонажа в контейнер
+        this.container.appendChild(this.personaje.element); //  Добавляем персонажа в контейнер
 
         for (let i = 0; i < 10; i++) {
             const moneda = new Moneda();
@@ -47,47 +47,59 @@ class Personaje {
         this.velocidad = 15;
         this.saltando = false;
 
-        // ✅ Правильный путь к файлу персонажа
+        // Правильный путь к файлу персонажа
         this.element = document.createElement("img");
         this.element.src = "./images/taxwoman1.png"; // Проверить, находится ли файл в `images/`
         this.element.classList.add("personaje");
 
-        // ✅ Добавляем персонажа внутрь контейнера
+        //  Добавляем персонажа внутрь контейнера
         document.getElementById("game-container").appendChild(this.element);
         this.actualizarPosicion();
     }
     
+
+
     mover(evento) {
+        console.log("Нажата клавиша:", evento.key); // Проверяем, какие клавиши нажимаются
+    
         if (evento.key === "ArrowRight") {
             this.x += this.velocidad;
-            this.element.style.transform = "scaleX(1)"; // ✅ Поворачивается вправо
+            this.element.style.transform = "scaleX(1)"; // Смотрит вправо
         } else if (evento.key === "ArrowLeft") {
             this.x -= this.velocidad;
-            this.element.style.transform = "scaleX(-1)"; // ✅ Поворачивается влево
+            this.element.style.transform = "scaleX(-1)"; //  Смотрит влево
         } else if (evento.key === "ArrowUp" && !this.saltando) {
+            this.y -= this.velocidad; //  Теперь можно двигаться вверх
+        } else if (evento.key === "ArrowDown" && !this.saltando) {
+            this.y += this.velocidad; //  Теперь можно двигаться вниз
+        } else if (evento.key === " " && !this.saltando) { // Пробел - прыжок!
             this.saltar();
         }
+    
         this.actualizarPosicion();
     }
+    
+    
+
 
     saltar() {
         this.saltando = true;
-        let alturaMaxima = this.y - 100;
+        let alturaMaxima = this.y - 250;
         const salto = setInterval(() => {
             if (this.y > alturaMaxima) {
-                this.y -= 10;
+                this.y -= 15;
             } else {
                 clearInterval(salto);
                 this.caer();
             }
-            this.actualizarPosicion();
+            this.actualizarPosicion(); 
         }, 20);
     }
 
     caer() {
         const gravedad = setInterval(() => {
             if (this.y < 300) {
-                this.y += 10;
+                this.y += 15;
             } else {
                 clearInterval(gravedad);
                 this.saltando = false;
@@ -123,13 +135,13 @@ class Moneda {
         this.element = document.createElement("div");
         this.element.classList.add("moneda");
 
-        // ✅ Добавляем знак "$" внутрь монеты
+        // Добавляем знак "$" внутрь монеты
         this.element.innerHTML = "$";
 
         document.getElementById("game-container").appendChild(this.element);
         this.actualizarPosicion();
 
-        // ✅ Запускаем движение монеты
+        //  Запускаем движение монеты
         this.moverAleatorio();
     }
 

@@ -22,11 +22,11 @@ body {
   
   .personaje {
     position: absolute;
-    width: 60px; /* ✅ Настроен размер персонажа */
+    width: 65px; /*  Настроен размер персонажа */
     height: auto;
-    left: 50px; /* ✅ Начальная позиция */
-    top: 300px; /* ✅ Правильное позиционирование */
-    transition: left 0.1s linear, top 0.1s linear; /* ✅ Плавное движение */
+    left: 50px; /* Начальная позиция */
+    top: 300px; /*  Правильное позиционирование */
+    transition: left 0.1s linear, top 0.1s linear; /* Плавное движение */
   }
   
   
@@ -39,11 +39,11 @@ body {
     border-radius: 50%;
     box-shadow: 0 0 10px 2px rgba(255, 223, 0, 0.8);
   
-    display: flex; /* ✅ Включаем Flexbox */
-    justify-content: center; /* ✅ Выравниваем по горизонтали */
-    align-items: center; /* ✅ Выравниваем по вертикали */
+    display: flex; /* Включаем Flexbox */
+    justify-content: center; /*  Выравниваем по горизонтали */
+    align-items: center; /* Выравниваем по вертикали */
   
-    font-size: 24px; /* ✅ Делаем знак $ крупнее */
+    font-size: 24px; /* Делаем знак $ крупнее */
     font-weight: bold;
     color: black;
     text-shadow: 1px 1px 2px white;
@@ -64,7 +64,7 @@ body {
   #game-container {  
     background: url("city1.png") repeat-x;
     background-size: cover;
-    animation: moveBackground 10s linear infinite; /* 🔹 Фон плавно двигается */
+    animation: moveBackground 10s linear infinite; /*  Фон плавно двигается */
   }
   
   
