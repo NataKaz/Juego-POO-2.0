@@ -1,9 +1,12 @@
-Enlace directo al juego: //natakaz.github.io/Juego-POO-2.0/
+Enlace directo al juego: [//natakaz.github.io/Juego-POO-2.0/](https://natakaz.github.io/Juego-POO-2.0/)
 
-# 🎮 Juego POO - ¡Recoge las monedas!
+# 🎮 Juego POO - 💰 "¡Es Hora de Pagar Impuestos!" 💰
 
 ## 📌 Descripción del juego
-Juego POO es un juego simple y divertido en el que el jugador controla un personaje y recoge monedas, evitando salir de los límites del campo de juego. ¡El juego está adaptado para **escritorio, dispositivos móviles y tabletas**!
+¡Ha llegado la hora de pagar los impuestos! Desde el **Ministerio de Hacienda**, una inspectora sale a las calles con una misión clara: **recolectar los impuestos de los contribuyentes**. Sin embargo, los ciudadanos **no están muy dispuestos a pagar** y hacen todo lo posible para evitarlo: **esconden las monedas por toda la ciudad, huyen y desaparecen**.  
+
+Toma el control de la inspectora, **encuentra las monedas, persigue a los contribuyentes y asegúrate de que nadie escape de sus obligaciones fiscales**. ¿Podrás completar la recaudación antes de que sea demasiado tarde? 🎮💰
+¡El juego está adaptado para **escritorio, dispositivos móviles y tabletas**!
 
 ## 🖥 Versión para PC (Escritorio)
 - Controles:
