@@ -12,8 +12,6 @@ Toma el control de la inspectora, **encuentra las monedas, persigue a los contri
 - Controles:
   - ➡️ **Flecha derecha** - Moverse a la derecha
   - ⬅️ **Flecha izquierda** - Moverse a la izquierda
-  - ⬆️ **Flecha arriba** - Moverse hacia arriba
-  - ⬇️ **Flecha abajo** - Moverse hacia abajo
   - ␣ **Espacio** - Saltar
 - Música de fondo y sonidos de interacción
 - El personaje no sale de los límites del campo de juego
