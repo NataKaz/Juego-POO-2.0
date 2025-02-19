@@ -36,7 +36,7 @@ Toma el control de la inspectora, **encuentra las monedas, persigue a los contri
 2. Usa el **teclado en PC** o **los botones en pantalla** en el teléfono/tableta
 3. Recoge **todas las monedas** para ganar 🏆
 4. Disfruta del juego y escucha la música de fondo 🎵
-
+5. Después de completar el primer nivel, puedes comenzar el segundo y así sucesivamente, donde las monedas de los contribuyentes huirán y se esconderán aún más rápido, pero en cada nuevo nivel, la cantidad de monedas disminuirá y así sucesivamente hasta que recolectes todas las monedas.
 ---
 
 ## 🔧 Características técnicas
