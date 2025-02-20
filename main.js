@@ -1,14 +1,29 @@
 class Game {
     constructor() {
         this.container = document.getElementById("game-container");
+        this.levelDisplay = document.getElementById("level-display");
         this.personaje = new Personaje();
         this.monedas = [];
         this.puntuacion = 0;
-        this.totalMonedas = 10;
+        this.currentLevel = 1;
+        this.totalMonedas = 10; 
         this.monedasRecogidas = 0;
         this.crearEscenario();
         this.agregarEventos();
         this.iniciarMusica();
+        this.actualizarNivelDisplay();
+    }
+
+    calcularParametrosNivel() {
+        return {
+            numMonedas: Math.max(3, this.totalMonedas - (this.currentLevel - 1)), 
+            velocidadBase: 3 + (this.currentLevel - 1) * 1.5, 
+            tiempoTeleport: Math.max(500, 2000 - (this.currentLevel - 1) * 200) 
+        };
+    }
+
+    actualizarNivelDisplay() {
+        this.levelDisplay.textContent = `Nivel: ${this.currentLevel}`;
     }
 
     iniciarMusica() {
@@ -21,9 +36,12 @@ class Game {
     }
 
     crearEscenario() {
+        const params = this.calcularParametrosNivel();
+        this.totalMonedas = params.numMonedas;
+
         this.container.appendChild(this.personaje.element);
         for (let i = 0; i < this.totalMonedas; i++) {
-            const moneda = new Moneda();
+            const moneda = new Moneda(params.velocidadBase, params.tiempoTeleport);
             this.monedas.push(moneda);
             this.container.appendChild(moneda.element);
         }
@@ -68,14 +86,18 @@ class Game {
                     sonidoMoneda.play();
 
                     if (this.monedasRecogidas === this.totalMonedas) {
-                        this.mostrarVictoria();
+                        if (this.currentLevel === 10) { 
+                            this.mostrarVictoriaFinal();
+                        } else {
+                            this.mostrarVictoriaNivel();
+                        }
                     }
                 }
             });
         }, 50);
     }
 
-    crearMensajeVictoria() {
+    crearMensajeVictoria(esFinal = false) {
         const victoryMessage = document.createElement('div');
         victoryMessage.id = 'victory-message';
 
@@ -83,15 +105,17 @@ class Game {
         victoryContent.className = 'victory-content';
 
         const title = document.createElement('h2');
-        title.textContent = '¡Victoria!';
+        title.textContent = esFinal ? '¡Victoria Final!' : `¡Nivel ${this.currentLevel} Completado!`;
 
         const message = document.createElement('p');
-        message.textContent = '¡Has recogido todas las monedas!';
+        message.textContent = esFinal ?
+            '¡Felicidades! Has completado todos los niveles!' :
+            `Preparate para el nivel ${this.currentLevel + 1}. ¡Las monedas serán más rápidas!`;
 
         const restartButton = document.createElement('button');
         restartButton.id = 'restart-button';
-        restartButton.textContent = 'Jugar de nuevo';
-        restartButton.addEventListener('click', () => this.reiniciarJuego());
+        restartButton.textContent = esFinal ? 'Empezar de nuevo' : 'Siguiente nivel';
+        restartButton.addEventListener('click', () => this.reiniciarJuego(esFinal));
 
         victoryContent.appendChild(title);
         victoryContent.appendChild(message);
@@ -101,37 +125,48 @@ class Game {
         document.body.appendChild(victoryMessage);
     }
 
-    mostrarVictoria() {
-        this.crearMensajeVictoria();
+    mostrarVictoriaNivel() {
+        this.crearMensajeVictoria(false);
         this.musicaFondo.pause();
         const victorySound = new Audio("sounds/victory.mp3");
         victorySound.volume = 0.5;
         victorySound.play();
     }
 
-    reiniciarJuego() {
-        
+    mostrarVictoriaFinal() {
+        this.crearMensajeVictoria(true);
+        this.musicaFondo.pause();
+        const victorySound = new Audio("sounds/victory.mp3");
+        victorySound.volume = 0.5;
+        victorySound.play();
+    }
+
+    reiniciarJuego(resetAll = false) {
         const victoryMessage = document.getElementById('victory-message');
         if (victoryMessage) {
             document.body.removeChild(victoryMessage);
         }
 
-        
         this.monedas.forEach(moneda => {
-            moneda.destruir(); 
+            moneda.destruir();
         });
         this.monedas = [];
         this.monedasRecogidas = 0;
 
-        
+        if (resetAll) {
+            this.currentLevel = 1;
+        } else {
+            this.currentLevel++;
+        }
+
+        this.actualizarNivelDisplay();
+
         this.personaje.x = 50;
         this.personaje.y = 300;
         this.personaje.actualizarPosicion();
 
-        
         this.crearEscenario();
 
-        
         this.musicaFondo.currentTime = 0;
         this.musicaFondo.play();
     }
@@ -212,16 +247,18 @@ class Personaje {
 }
 
 class Moneda {
-    constructor() {
+    constructor(velocidadBase = 3, tiempoTeleport = 2000) {
         this.x = Math.random() * 700 + 50;
         this.y = Math.random() * 250 + 50;
         this.width = 35;
         this.height = 35;
-        this.velocidad = 3; // Скорость движения монеты
+        this.velocidad = velocidadBase;
+        this.tiempoTeleport = tiempoTeleport;
         this.element = document.createElement("div");
         this.element.classList.add("moneda");
         this.element.innerHTML = "$";
         document.getElementById("game-container").appendChild(this.element);
+        this.ultimaTeleportacion = 0;
         this.actualizarPosicion();
         this.iniciarMovimiento();
     }
@@ -237,25 +274,41 @@ class Moneda {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
+    teleportar() {
+        const ahora = Date.now();
+        if (ahora - this.ultimaTeleportacion > this.tiempoTeleport) {
+            this.element.classList.add('teleporting');
+
+            setTimeout(() => {
+                this.x = Math.random() * 700 + 50;
+                this.y = Math.random() * 250 + 50;
+                this.actualizarPosicion();
+                this.element.classList.remove('teleporting');
+            }, 300);
+
+            this.ultimaTeleportacion = ahora;
+        }
+    }
+
     mover(personaje) {
         const distancia = this.calcularDistancia(personaje);
 
-        
-        if (distancia < 200) {
-            
+        if (distancia < 100) {
+            this.teleportar();
+        }
+        else if (distancia < 300) {
             const dx = this.x - personaje.x;
             const dy = this.y - personaje.y;
 
-            
             const length = Math.sqrt(dx * dx + dy * dy);
             const dirX = dx / length;
             const dirY = dy / length;
 
-            
-            this.x += dirX * this.velocidad;
-            this.y += dirY * this.velocidad;
+            const velocidadActual = distancia < 150 ? this.velocidad * 1.5 : this.velocidad;
 
-            
+            this.x += dirX * velocidadActual;
+            this.y += dirY * velocidadActual;
+
             this.x = Math.max(35, Math.min(this.x, 750));
             this.y = Math.max(35, Math.min(this.y, 350));
 
@@ -284,7 +337,6 @@ class Moneda {
         }
     }
 }
-
 
 document.addEventListener('DOMContentLoaded', () => {
     const juego = new Game();
